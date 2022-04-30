@@ -37,6 +37,10 @@ android {
     }
 }
 
+configurations {
+    ktlint
+}
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -57,7 +61,26 @@ dependencies {
 
     implementation 'io.coil-kt:coil:1.4.0'
 
+    // Added
+    ktlint "com.pinterest:ktlint:0.44.0"
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+
+// lint task
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "src/**/*.kt", "android", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/reports/ktlint/ktlint-result.xml"
+}
+check.dependsOn ktlint
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt", "android", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/reports/ktlint/ktlint-result.xml"
+    ignoreExitValue true
 }

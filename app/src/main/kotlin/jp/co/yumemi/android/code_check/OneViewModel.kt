@@ -31,10 +31,11 @@ class OneViewModel(
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
-            val response: HttpResponse = client?.get("https://api.github.com/search/repositories") {
-                header("Accept", "application/vnd.github.v3+json")
-                parameter("q", inputText)
-            }
+            val response: HttpResponse =
+                client?.get("https://api.github.com/search/repositories") {
+                    header("Accept", "application/vnd.github.v3+json")
+                    parameter("q", inputText)
+                }
 
             val jsonBody = JSONObject(response.receive<String>())
 
@@ -54,18 +55,16 @@ class OneViewModel(
                 val watchersCount = jsonItem.optLong("watchers_count")
                 val forksCount = jsonItem.optLong("forks_conut")
                 val openIssuesCount = jsonItem.optLong("open_issues_count")
-
-                items.add(
-                    item(
-                        name = name,
-                        ownerIconUrl = ownerIconUrl,
-                        language = context.getString(R.string.written_language, language),
-                        stargazersCount = stargazersCount,
-                        watchersCount = watchersCount,
-                        forksCount = forksCount,
-                        openIssuesCount = openIssuesCount
-                    )
+                val item = item(
+                    name = name,
+                    ownerIconUrl = ownerIconUrl,
+                    language = context.getString(R.string.written_language, language),
+                    stargazersCount = stargazersCount,
+                    watchersCount = watchersCount,
+                    forksCount = forksCount,
+                    openIssuesCount = openIssuesCount
                 )
+                items.add(item)
             }
 
             lastSearchDate = Date()

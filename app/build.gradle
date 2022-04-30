@@ -65,7 +65,7 @@ dependencies {
     implementation 'io.coil-kt:coil:1.4.0'
 
     // Added
-    ktlint "com.pinterest:ktlint:0.44.0"
+    ktlint 'com.pinterest:ktlint:0.45.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

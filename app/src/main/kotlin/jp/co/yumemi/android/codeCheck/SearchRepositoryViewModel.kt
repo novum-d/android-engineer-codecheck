@@ -5,6 +5,8 @@ package jp.co.yumemi.android.codeCheck
 
 import android.content.Context
 import android.os.Parcelable
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -13,20 +15,23 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
-import jp.co.yumemi.android.codeCheck.TopActivity.Companion.lastSearchDate
+import java.util.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.parcelize.Parcelize
+import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Date
 
 /**
  * TwoFragment で使う
  */
-class OneViewModel(
+class SearchRepositoryViewModel(
     private val context: Context
 ) : ViewModel() {
+
+    private var _lastSearchDate = MutableLiveData<Date>()
+    val lastSearchDate: LiveData<Date> get() = _lastSearchDate
 
     // 検索結果
     fun searchResults(inputText: String): List<Repository> = runBlocking {
@@ -34,24 +39,21 @@ class OneViewModel(
 
         return@runBlocking GlobalScope.async {
             val response: HttpResponse =
-                client?.get("https://api.github.com/search/repositories") {
+                client.get("https://api.github.com/search/repositories") {
                     header("Accept", "application/vnd.github.v3+json")
                     parameter("q", inputText)
                 }
-
             val jsonBody = JSONObject(response.body<String>())
-
-            val jsonItems = jsonBody.optJSONArray("items")!!
-
+            val jsonItems = jsonBody.optJSONArray("items") ?: JSONArray()
             val repositoryList = mutableListOf<Repository>()
 
             /**
              * アイテムの個数分ループする
              */
             for (i in 0 until jsonItems.length()) {
-                val jsonItem = jsonItems.optJSONObject(i)!!
+                val jsonItem = jsonItems.optJSONObject(i)
                 val name = jsonItem.optString("full_name")
-                val ownerIconUrl = jsonItem.optJSONObject("owner")!!.optString("avatar_url")
+                val ownerIconUrl = jsonItem?.optJSONObject("owner")?.optString("avatar_url") ?: ""
                 val language = jsonItem.optString("language")
                 val stargazersCount = jsonItem.optLong("stargazers_count")
                 val watchersCount = jsonItem.optLong("watchers_count")
@@ -69,7 +71,7 @@ class OneViewModel(
                 repositoryList.add(repository)
             }
 
-            lastSearchDate = Date()
+            _lastSearchDate.value = Date()
 
             return@async repositoryList.toList()
         }.await()

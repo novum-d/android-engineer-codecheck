@@ -25,10 +25,10 @@ class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
 
         val binding = FragmentSearchRepositoryBinding.bind(view)
 
-        val viewModel = OneViewModel(context!!)
+        val viewModel = SearchRepositoryViewModel(requireContext())
 
-        val layoutManager = LinearLayoutManager(context!!)
-        val dividerItemDecoration = DividerItemDecoration(context!!, layoutManager.orientation)
+        val layoutManager = LinearLayoutManager(requireContext())
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
         val adapter = CustomAdapter(object : CustomAdapter.OnRepositoryClickListener {
             override fun onRepositoryClick(repository: Repository) {
                 navigateToRepositoryFragment(repository)

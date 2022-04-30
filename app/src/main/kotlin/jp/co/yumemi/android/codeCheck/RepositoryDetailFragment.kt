@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import coil.load
-import jp.co.yumemi.android.codeCheck.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.codeCheck.databinding.FragmentRepositoryDetailBinding
 
 class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
@@ -19,10 +19,12 @@ class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
     private var _binding: FragmentRepositoryDetailBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: SearchRepositoryViewModel by viewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("検索した日時", lastSearchDate.toString())
+        Log.d("検索した日時", viewModel.lastSearchDate.toString())
 
         _binding = FragmentRepositoryDetailBinding.bind(view)
 

@@ -66,6 +66,7 @@ dependencies {
 
     // Added
     ktlint 'com.pinterest:ktlint:0.45.2'
+    implementation "io.insert-koin:koin-android:3.1.5"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

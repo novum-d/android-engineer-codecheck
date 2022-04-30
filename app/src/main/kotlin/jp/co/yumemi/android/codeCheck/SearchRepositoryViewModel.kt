@@ -1,33 +1,35 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.codeCheck
 
 import android.content.Context
 import android.os.Parcelable
 import androidx.lifecycle.ViewModel
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.android.Android
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.statement.HttpResponse
+import jp.co.yumemi.android.codeCheck.TopActivity.Companion.lastSearchDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
-import java.util.*
+import java.util.Date
 
 /**
  * TwoFragment で使う
  */
 class OneViewModel(
-    val context: Context
+    private val context: Context
 ) : ViewModel() {
 
     // 検索結果
-    fun searchResults(inputText: String): List<item> = runBlocking {
+    fun searchResults(inputText: String): List<Repository> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
@@ -37,11 +39,11 @@ class OneViewModel(
                     parameter("q", inputText)
                 }
 
-            val jsonBody = JSONObject(response.receive<String>())
+            val jsonBody = JSONObject(response.body<String>())
 
             val jsonItems = jsonBody.optJSONArray("items")!!
 
-            val items = mutableListOf<item>()
+            val repositoryList = mutableListOf<Repository>()
 
             /**
              * アイテムの個数分ループする
@@ -55,7 +57,7 @@ class OneViewModel(
                 val watchersCount = jsonItem.optLong("watchers_count")
                 val forksCount = jsonItem.optLong("forks_conut")
                 val openIssuesCount = jsonItem.optLong("open_issues_count")
-                val item = item(
+                val repository = Repository(
                     name = name,
                     ownerIconUrl = ownerIconUrl,
                     language = context.getString(R.string.written_language, language),
@@ -64,18 +66,18 @@ class OneViewModel(
                     forksCount = forksCount,
                     openIssuesCount = openIssuesCount
                 )
-                items.add(item)
+                repositoryList.add(repository)
             }
 
             lastSearchDate = Date()
 
-            return@async items.toList()
+            return@async repositoryList.toList()
         }.await()
     }
 }
 
 @Parcelize
-data class item(
+data class Repository(
     val name: String,
     val ownerIconUrl: String,
     val language: String,

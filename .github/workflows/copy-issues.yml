@@ -15,7 +15,7 @@ jobs:
       with:
         route: GET /repos/yumemi-inc/android-engineer-codecheck/labels
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     - id: output_label_data
       run: |
         result=$(echo '${{ steps.get_label_data.outputs.data }}' | sed -z 's/\n//g')
@@ -36,7 +36,7 @@ jobs:
         color: ${{ matrix.label.color }}
         description: ${{ matrix.label.description }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
   
   get-milestones:
     if: github.repository != 'yumemi-inc/android-engineer-codecheck'
@@ -50,7 +50,7 @@ jobs:
       with:
         route: GET /repos/yumemi-inc/android-engineer-codecheck/milestones
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     - id: output_milestones_data
       run: |
         result=$(echo '${{ steps.get_milestones_data.outputs.data }}' | sed -z 's/\n//g')
@@ -70,7 +70,7 @@ jobs:
         title: ${{ matrix.milestone.title }}
         description: ${{ matrix.milestone.description }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
   get-myrepo-milestones:
     needs: create-milestones
@@ -84,7 +84,7 @@ jobs:
       with:
         route: GET /repos/${{ github.repository }}/milestones
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     - id: output_milestones_data
       run: |
         result=$(echo '${{ steps.get_milestones_data.outputs.data }}' | sed -z 's/\n/%0A/g' | sed -z 's/\r/%0D/g')
@@ -104,7 +104,7 @@ jobs:
         sort: created
         direction: asc
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     - id: output_issues_data
       run: |
         result=$(echo '${{ steps.get_issues_data.outputs.data }}' | sed -z 's/\n/%0A/g' | sed -z 's/\r/%0D/g')
@@ -125,7 +125,7 @@ jobs:
         state: all
         per_page: 100
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     - id: output_issues_data
       run: |
         result=$(echo '${{ steps.get_issues_data.outputs.data }}' | sed -z 's/\n/%0A/g' | sed -z 's/\r/%0D/g')
@@ -167,7 +167,7 @@ jobs:
 
         labels='${{ toJson(matrix.issue.labels.*.name) }}'
         curl -X POST -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
           https://api.github.com/repos/${{ github.repository }}/issues \
           -d "{
             \"title\" : \"${{ matrix.issue.title }}\",

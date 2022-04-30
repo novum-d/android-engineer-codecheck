@@ -5,6 +5,8 @@ package jp.co.yumemi.android.codeCheck
 
 import android.content.Context
 import android.os.Parcelable
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -14,7 +16,6 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import java.util.*
-import jp.co.yumemi.android.codeCheck.TopActivity.Companion.lastSearchDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -25,9 +26,12 @@ import org.json.JSONObject
 /**
  * TwoFragment で使う
  */
-class OneViewModel(
+class SearchRepositoryViewModel(
     private val context: Context
 ) : ViewModel() {
+
+    private var _lastSearchDate = MutableLiveData<Date>()
+    val lastSearchDate: LiveData<Date> get() = _lastSearchDate
 
     // 検索結果
     fun searchResults(inputText: String): List<Repository> = runBlocking {
@@ -67,7 +71,7 @@ class OneViewModel(
                 repositoryList.add(repository)
             }
 
-            lastSearchDate = Date()
+            _lastSearchDate.value = Date()
 
             return@async repositoryList.toList()
         }.await()

@@ -17,15 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.codeCheck.databinding.FragmentSearchRepositoryBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
+
+    private val viewModel: SearchRepositoryViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentSearchRepositoryBinding.bind(view)
-
-        val viewModel = SearchRepositoryViewModel(requireContext())
 
         val layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
@@ -38,7 +39,7 @@ class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
         binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
             if (action == EditorInfo.IME_ACTION_SEARCH) {
                 editText.text.toString().let {
-                    viewModel.searchResults(it).apply {
+                    viewModel.searchGitRepositories(it).apply {
                         adapter.submitList(this)
                     }
                 }
@@ -91,8 +92,7 @@ class CustomAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val repository = getItem(position)
-        (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text =
-            repository.name
+        holder.itemView.findViewById<TextView>(R.id.repositoryNameView).text = repository.name
         holder.itemView.setOnClickListener {
             onRepositoryClickListener.onRepositoryClick(repository)
         }

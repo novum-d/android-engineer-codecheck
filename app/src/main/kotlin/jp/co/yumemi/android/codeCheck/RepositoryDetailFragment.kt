@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import coil.load
 import jp.co.yumemi.android.codeCheck.databinding.FragmentRepositoryDetailBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
 
@@ -19,7 +19,7 @@ class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
     private var _binding: FragmentRepositoryDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SearchRepositoryViewModel by viewModels()
+    private val viewModel: SearchRepositoryViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
+
+    // Added
+    id 'org.jetbrains.dokka'
 }
 
 android {
@@ -69,7 +72,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
-// lint task
+// Lint task
 task ktlint(type: JavaExec, group: "verification") {
     description = "Check Kotlin code style."
     classpath = configurations.ktlint
@@ -83,4 +86,14 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
     main = "com.pinterest.ktlint.Main"
     args "-F", "src/**/*.kt", "android", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/reports/ktlint/ktlint-result.xml"
     ignoreExitValue true
+}
+
+// Document generator task
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("$buildDir/kdoc"))
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
 }

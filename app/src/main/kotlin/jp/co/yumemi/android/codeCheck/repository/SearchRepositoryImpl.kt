@@ -7,8 +7,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
-import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.GitRepo
+import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.data.config.HttpRoutes
 import org.json.JSONArray
 import org.json.JSONObject
@@ -39,7 +39,7 @@ class SearchRepositoryImpl(
             val language = jsonItem.optString("language")
             val stargazersCount = jsonItem.optLong("stargazers_count")
             val watchersCount = jsonItem.optLong("watchers_count")
-            val forksCount = jsonItem.optLong("forks_conut")
+            val forksCount = jsonItem.optLong("forks_count")
             val openIssuesCount = jsonItem.optLong("open_issues_count")
             val repository = GitRepo(
                 name = name,

@@ -17,18 +17,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import jp.co.yumemi.android.codeCheck.databinding.FragmentSearchRepositoryBinding
+import jp.co.yumemi.android.codeCheck.databinding.FragmentSearchGitRepoBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
+class SearchGitRepoFragment : Fragment(R.layout.fragment_search_git_repo) {
 
-    private var _binding: FragmentSearchRepositoryBinding? = null
+    private var _binding: FragmentSearchGitRepoBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SearchRepositoryViewModel by viewModel()
+    private val viewModel: SearchGitRepoViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentSearchRepositoryBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchGitRepoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,9 +37,9 @@ class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
 
         val layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
-        val adapter = CustomAdapter(object : CustomAdapter.OnRepositoryClickListener {
-            override fun onRepositoryClick(repository: Repository) {
-                navigateToRepositoryFragment(repository)
+        val adapter = CustomAdapter(object : CustomAdapter.OnItemClickListener {
+            override fun onRepositoryClick(gitRepo: GitRepo) {
+                navigateToGitRepoDetailFragment(gitRepo)
             }
         })
 
@@ -67,34 +67,31 @@ class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
         }
     }
 
-    fun navigateToRepositoryFragment(repository: Repository) {
-        val action =
-            SearchRepositoryFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(
-                repository
-            )
+    fun navigateToGitRepoDetailFragment(gitRepo: GitRepo) {
+        val action = SearchGitRepoFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(gitRepo)
         findNavController().navigate(action)
     }
 }
 
-val diffUtil = object : DiffUtil.ItemCallback<Repository>() {
+val diffUtil = object : DiffUtil.ItemCallback<GitRepo>() {
 
-    override fun areItemsTheSame(oldRepository: Repository, newRepository: Repository): Boolean {
-        return oldRepository.name == newRepository.name
+    override fun areItemsTheSame(oldGitRepo: GitRepo, newGitRepo: GitRepo): Boolean {
+        return oldGitRepo.name == newGitRepo.name
     }
 
-    override fun areContentsTheSame(oldRepository: Repository, newRepository: Repository): Boolean {
-        return oldRepository == newRepository
+    override fun areContentsTheSame(oldGitRepo: GitRepo, newGitRepo: GitRepo): Boolean {
+        return oldGitRepo == newGitRepo
     }
 }
 
 class CustomAdapter(
-    private val onRepositoryClickListener: OnRepositoryClickListener
-) : ListAdapter<Repository, CustomAdapter.ViewHolder>(diffUtil) {
+    private val onItemClickListener: OnItemClickListener
+) : ListAdapter<GitRepo, CustomAdapter.ViewHolder>(diffUtil) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    interface OnRepositoryClickListener {
-        fun onRepositoryClick(repository: Repository)
+    interface OnItemClickListener {
+        fun onRepositoryClick(gitRepo: GitRepo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -106,7 +103,7 @@ class CustomAdapter(
         val repository = getItem(position)
         holder.itemView.findViewById<TextView>(R.id.repositoryNameView).text = repository.name
         holder.itemView.setOnClickListener {
-            onRepositoryClickListener.onRepositoryClick(repository)
+            onItemClickListener.onRepositoryClick(repository)
         }
     }
 }

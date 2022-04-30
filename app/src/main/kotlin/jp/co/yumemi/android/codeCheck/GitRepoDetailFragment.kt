@@ -11,20 +11,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
-import jp.co.yumemi.android.codeCheck.databinding.FragmentRepositoryDetailBinding
+import jp.co.yumemi.android.codeCheck.databinding.FragmentGitRepoDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
+class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
 
-    private val args: RepositoryDetailFragmentArgs by navArgs()
+    private val args: GitRepoDetailFragmentArgs by navArgs()
 
-    private var _binding: FragmentRepositoryDetailBinding? = null
+    private var _binding: FragmentGitRepoDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SearchRepositoryViewModel by viewModel()
+    private val viewModel: SearchGitRepoViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentRepositoryDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentGitRepoDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 

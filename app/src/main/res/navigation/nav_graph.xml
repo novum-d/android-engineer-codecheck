@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchRepositoryFragment">
+    app:startDestination="@id/searchGitRepoFragment">
 
     <fragment
-        android:id="@+id/searchRepositoryFragment"
-        android:name="jp.co.yumemi.android.codeCheck.SearchRepositoryFragment"
+        android:id="@+id/searchGitRepoFragment"
+        android:name="jp.co.yumemi.android.codeCheck.SearchGitRepoFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_search_repository">
+        tools:layout="@layout/fragment_search_git_repo">
         <action
             android:id="@+id/action_repositoriesFragment_to_repositoryFragment"
-            app:destination="@id/repositoryDetailFragment" />
+            app:destination="@id/gitRepoDetailFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/repositoryDetailFragment"
-        android:name="jp.co.yumemi.android.codeCheck.RepositoryDetailFragment"
+        android:id="@+id/gitRepoDetailFragment"
+        android:name="jp.co.yumemi.android.codeCheck.GitRepoDetailFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_repository_detail">
+        tools:layout="@layout/fragment_git_repo_detail">
         <argument
             android:name="repository"
-            app:argType="jp.co.yumemi.android.codeCheck.Repository" />
+            app:argType="jp.co.yumemi.android.codeCheck.GitRepo" />
     </fragment>
 
 </navigation>

@@ -13,7 +13,7 @@ import jp.co.yumemi.android.codeCheck.repository.SearchRepository
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
-class SearchRepositoryViewModel(
+class SearchGitRepoViewModel(
     private val searchRepository: SearchRepository
 ) : ViewModel() {
 
@@ -22,8 +22,8 @@ class SearchRepositoryViewModel(
     val lastSearchDate: LiveData<Date> get() = _lastSearchDate
 
     /** Git Repositoryリスト */
-    val repositories: LiveData<List<Repository>> get() = _repositories
-    private var _repositories = MutableLiveData<List<Repository>>()
+    val repositories: LiveData<List<GitRepo>> get() = _repositories
+    private var _repositories = MutableLiveData<List<GitRepo>>()
 
     fun searchGitRepositories(keyword: String) {
         viewModelScope.launch {
@@ -34,7 +34,7 @@ class SearchRepositoryViewModel(
 }
 
 @Parcelize
-data class Repository(
+data class GitRepo(
     val name: String,
     val ownerIconUrl: String,
     val language: String,

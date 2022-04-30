@@ -5,7 +5,9 @@ package jp.co.yumemi.android.codeCheck
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
@@ -21,15 +23,17 @@ class RepositoryDetailFragment : Fragment(R.layout.fragment_repository_detail) {
 
     private val viewModel: SearchRepositoryViewModel by viewModel()
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentRepositoryDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Log.d("検索した日時", viewModel.lastSearchDate.toString())
 
-        _binding = FragmentRepositoryDetailBinding.bind(view)
-
         val repository = args.repository
-
         binding.also {
             it.ownerIconView.load(repository.ownerIconUrl)
             it.nameView.text = repository.name

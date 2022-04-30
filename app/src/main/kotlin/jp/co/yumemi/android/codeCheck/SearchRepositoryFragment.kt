@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -21,12 +22,18 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
 
+    private var _binding: FragmentSearchRepositoryBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: SearchRepositoryViewModel by viewModel()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentSearchRepositoryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val binding = FragmentSearchRepositoryBinding.bind(view)
 
         val layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration = DividerItemDecoration(requireContext(), layoutManager.orientation)
@@ -38,10 +45,11 @@ class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
 
         binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
             if (action == EditorInfo.IME_ACTION_SEARCH) {
-                editText.text.toString().let {
-                    viewModel.searchGitRepositories(it).apply {
-                        adapter.submitList(this)
-                    }
+                when (val text = editText.text.toString()) {
+                    // 何も入力されていない場合、入力を促すToastを表示
+                    "" -> Toast.makeText(context, "Please enter", Toast.LENGTH_SHORT).show()
+                    // Git repositoryを検索
+                    else -> viewModel.searchGitRepositories(text)
                 }
                 return@setOnEditorActionListener true
             }
@@ -52,6 +60,10 @@ class SearchRepositoryFragment : Fragment(R.layout.fragment_search_repository) {
             it.layoutManager = layoutManager
             it.addItemDecoration(dividerItemDecoration)
             it.adapter = adapter
+        }
+
+        viewModel.repositories.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
     }
 

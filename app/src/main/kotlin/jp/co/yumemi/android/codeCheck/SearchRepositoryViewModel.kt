@@ -17,16 +17,19 @@ class SearchRepositoryViewModel(
     private val searchRepository: SearchRepository
 ) : ViewModel() {
 
+    /** 最終検索日時 */
     private var _lastSearchDate = MutableLiveData<Date>()
     val lastSearchDate: LiveData<Date> get() = _lastSearchDate
 
-    fun searchGitRepositories(keyword: String): List<Repository> {
-        var repositories = listOf<Repository>()
+    /** Git Repositoryリスト */
+    val repositories: LiveData<List<Repository>> get() = _repositories
+    private var _repositories = MutableLiveData<List<Repository>>()
+
+    fun searchGitRepositories(keyword: String) {
         viewModelScope.launch {
-            repositories = searchRepository.searchGitRepositories(keyword)
+            _repositories.value = searchRepository.searchGitRepositories(keyword)
             _lastSearchDate.value = Date()
         }
-        return repositories
     }
 }
 

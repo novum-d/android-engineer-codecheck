@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -18,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.co.yumemi.android.codeCheck.databinding.FragmentSearchGitRepoBinding
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@FlowPreview
 class SearchGitRepoFragment : Fragment(R.layout.fragment_search_git_repo) {
 
     private var _binding: FragmentSearchGitRepoBinding? = null
@@ -43,18 +43,8 @@ class SearchGitRepoFragment : Fragment(R.layout.fragment_search_git_repo) {
             }
         })
 
-        binding.searchInputText.setOnEditorActionListener { editText, action, _ ->
-            if (action == EditorInfo.IME_ACTION_SEARCH) {
-                when (val text = editText.text.toString()) {
-                    // 何も入力されていない場合、入力を促すToastを表示
-                    "" -> Toast.makeText(context, "Please enter", Toast.LENGTH_SHORT).show()
-                    // Git repositoryを検索
-                    else -> viewModel.searchGitRepositories(text)
-                }
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
+
+        viewModel.onSearch(binding.searchInputText)
 
         binding.recyclerView.also {
             it.layoutManager = layoutManager
@@ -67,6 +57,11 @@ class SearchGitRepoFragment : Fragment(R.layout.fragment_search_git_repo) {
         }
     }
 
+    /**
+     * リポジトリの詳細画面へ遷移
+     *
+     * @param gitRepo
+     */
     fun navigateToGitRepoDetailFragment(gitRepo: GitRepo) {
         val action = SearchGitRepoFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(gitRepo)
         findNavController().navigate(action)

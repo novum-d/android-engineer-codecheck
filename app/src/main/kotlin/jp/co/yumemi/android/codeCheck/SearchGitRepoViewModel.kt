@@ -4,12 +4,14 @@
 package jp.co.yumemi.android.codeCheck
 
 import android.os.Parcelable
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import java.util.*
 import jp.co.yumemi.android.codeCheck.repository.SearchRepository
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -18,16 +20,21 @@ class SearchGitRepoViewModel(
 ) : ViewModel() {
 
     /** 最終検索日時 */
-    private var _lastSearchDate = MutableLiveData<Date>()
+    private val _lastSearchDate = MutableLiveData<Date>()
     val lastSearchDate: LiveData<Date> get() = _lastSearchDate
 
     /** Git Repositoryリスト */
+    private val _repositories = MutableLiveData<List<GitRepo>>()
     val repositories: LiveData<List<GitRepo>> get() = _repositories
-    private var _repositories = MutableLiveData<List<GitRepo>>()
 
-    fun searchGitRepositories(keyword: String) {
+    @FlowPreview
+    fun onSearch(textView: TextView) {
         viewModelScope.launch {
-            _repositories.value = searchRepository.searchGitRepositories(keyword)
+            searchRepository.createSearchCallbackFlow(textView)
+                // .debounce(10_00)
+                .collect {
+                    _repositories.value = it
+                }
             _lastSearchDate.value = Date()
         }
     }

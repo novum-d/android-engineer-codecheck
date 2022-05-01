@@ -33,7 +33,7 @@ class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
 
         Log.d("検索した日時", viewModel.lastSearchDate.toString())
 
-        val repository = args.repository
+        val repository = args.gitRepo
         binding.also {
             it.ownerIconView.load(repository.ownerIconUrl)
             it.nameView.text = repository.name

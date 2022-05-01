@@ -1,7 +1,9 @@
 package jp.co.yumemi.android.codeCheck.repository
 
+import android.widget.TextView
 import jp.co.yumemi.android.codeCheck.GitRepo
+import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
-    suspend fun searchGitRepositories(inputText: String): List<GitRepo>
+    suspend fun createSearchCallbackFlow(textView: TextView): Flow<List<GitRepo>>
 }

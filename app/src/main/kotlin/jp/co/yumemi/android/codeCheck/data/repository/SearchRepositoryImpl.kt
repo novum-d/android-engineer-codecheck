@@ -15,6 +15,7 @@ import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.data.config.HttpRoutes
 import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 import jp.co.yumemi.android.codeCheck.data.model.GitRepoList
@@ -35,16 +36,19 @@ class SearchRepositoryImpl(
 
         // データ更新を通知するリスナー
         val listener = OnEditorActionListener { editText, action, _ ->
+
             // 検索ボタンを押す間隔を1秒以上に調整
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return@OnEditorActionListener false
             }
             lastClickTime = SystemClock.elapsedRealtime()
+
+            // 検索イベント
             if (action == EditorInfo.IME_ACTION_SEARCH) {
                 when (val keyword = editText.text.toString()) {
 
                     // 何も入力されていない場合、入力を促すToastを表示
-                    "" -> Toast.makeText(context, "キーワードが入力されていません", Toast.LENGTH_SHORT).show()
+                    "" -> Toast.makeText(context, context.getString(R.string.empty_keyword), Toast.LENGTH_SHORT).show()
 
                     // Git Repositoryを検索
                     else -> launch {
@@ -54,6 +58,7 @@ class SearchRepositoryImpl(
                 }
                 return@OnEditorActionListener true
             }
+
             return@OnEditorActionListener false
         }
 
@@ -66,7 +71,7 @@ class SearchRepositoryImpl(
 
     private suspend fun requestGitRepositories(keyword: String): List<GitRepo> {
 
-        // GithubApiにaccessし、HttpResponseを受け取る
+        // GithubApiにアクセスし、HttpResponseを受け取る
         val response: HttpResponse = try {
             client.get(HttpRoutes.GIT_HUB_API) {
                 timeout {
@@ -77,7 +82,7 @@ class SearchRepositoryImpl(
                 parameter("q", keyword)
             }
         } catch (e: Throwable) {
-            Toast.makeText(context, "現在サービスがご利用いただけません", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.service_is_not_available), Toast.LENGTH_SHORT).show()
             null
         } ?: return emptyList()
 

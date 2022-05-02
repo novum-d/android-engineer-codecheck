@@ -14,7 +14,7 @@ val codeCheckAppModule = module {
     single { SearchRepositoryImpl(client, androidContext()) }
 }
 
-val client = HttpClient(Android) {
+private val client = HttpClient(Android) {
     install(HttpTimeout)
     install(ContentNegotiation) {
         json(

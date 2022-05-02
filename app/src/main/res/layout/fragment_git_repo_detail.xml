@@ -46,6 +46,8 @@
         android:text="@string/written_in_kotlin"
         android:textColor="@color/black"
         android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/centerGuid"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nameView"
         tools:ignore="MissingConstraints" />
 

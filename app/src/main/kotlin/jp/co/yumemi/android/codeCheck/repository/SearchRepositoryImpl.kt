@@ -80,6 +80,5 @@ class SearchRepositoryImpl(
         } ?: return emptyList()
 
         return response.body<GitRepoList>().items
-        //     language = context.getString(R.string.written_language, language),
     }
 }

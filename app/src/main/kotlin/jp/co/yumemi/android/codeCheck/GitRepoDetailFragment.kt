@@ -37,11 +37,11 @@ class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
         binding.also {
             it.ownerIconView.load(repository.ownerIconUrl.avatarUrl)
             it.nameView.text = repository.name
-            it.languageView.text = repository.language
-            it.starsView.text = "${repository.stargazersCount} stars"
-            it.watchersView.text = "${repository.watchersCount} watchers"
-            it.forksView.text = "${repository.forksCount} forks"
-            it.openIssuesView.text = "${repository.openIssuesCount} open issues"
+            it.languageView.text = getString(R.string.written_language, repository.language)
+            it.starsView.text = getString(R.string.stars_view, repository.stargazersCount)
+            it.watchersView.text = getString(R.string.watchers_view, repository.watchersCount)
+            it.forksView.text = getString(R.string.forks_view, repository.forksCount)
+            it.openIssuesView.text = getString(R.string.openIssues_view, repository.openIssuesCount)
         }
     }
 }

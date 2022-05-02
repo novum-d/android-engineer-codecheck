@@ -1,7 +1,7 @@
-package jp.co.yumemi.android.codeCheck.repository
+package jp.co.yumemi.android.codeCheck.data.repository
 
 import android.widget.TextView
-import jp.co.yumemi.android.codeCheck.GitRepo
+import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {

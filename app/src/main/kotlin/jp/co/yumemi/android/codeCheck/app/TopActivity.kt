@@ -1,10 +1,11 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.codeCheck
+package jp.co.yumemi.android.codeCheck.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.di.codeCheckAppModule
 import jp.co.yumemi.android.codeCheck.di.viewModelModule
 import org.koin.android.ext.koin.androidContext

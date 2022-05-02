@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.codeCheck
+package jp.co.yumemi.android.codeCheck.ui.detail
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
+import jp.co.yumemi.android.codeCheck.R
+import jp.co.yumemi.android.codeCheck.app.SearchGitRepoViewModel
 import jp.co.yumemi.android.codeCheck.databinding.FragmentGitRepoDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,15 +35,16 @@ class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
 
         Log.d("検索した日時", viewModel.lastSearchDate.toString())
 
-        val repository = args.gitRepo
+        val gitRepo = args.gitRepo
         binding.also {
-            it.ownerIconView.load(repository.ownerIconUrl.avatarUrl)
-            it.nameView.text = repository.name
-            it.languageView.text = getString(R.string.written_language, repository.language)
-            it.starsView.text = getString(R.string.stars_view, repository.stargazersCount)
-            it.watchersView.text = getString(R.string.watchers_view, repository.watchersCount)
-            it.forksView.text = getString(R.string.forks_view, repository.forksCount)
-            it.openIssuesView.text = getString(R.string.openIssues_view, repository.openIssuesCount)
+            it.ownerIconView.load(gitRepo.ownerIconUrl.avatarUrl)
+            it.nameView.text = gitRepo.name
+            it.languageView.text =
+                if (gitRepo.language.isNullOrEmpty()) "No Language." else getString(R.string.written_language, gitRepo.language)
+            it.starsView.text = getString(R.string.stars_view, gitRepo.stargazersCount)
+            it.watchersView.text = getString(R.string.watchers_view, gitRepo.watchersCount)
+            it.forksView.text = getString(R.string.forks_view, gitRepo.forksCount)
+            it.openIssuesView.text = getString(R.string.openIssues_view, gitRepo.openIssuesCount)
         }
     }
 }

@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
     <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <string name="jetbrains_kotlin">JetBrains/kotlin</string>
+    <string name="written_in_kotlin">Written in Kotlin</string>
+    <string name="_38530_stars">38530 stars</string>
+    <string name="_38530_watchers">38530 watchers</string>
+    <string name="_4675_forks">4675 forks</string>
+    <string name="_131_open_issues">131 open issues</string>
+
     <string name="written_language">Written in %s</string>
+    <string name="stars_view">%1$d stars</string>
+    <string name="watchers_view">%1$d watchers</string>
+    <string name="forks_view">%1$d forks</string>
+    <string name="openIssues_view">%1$d open issues</string>
 </resources>

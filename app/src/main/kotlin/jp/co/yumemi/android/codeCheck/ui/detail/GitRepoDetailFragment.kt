@@ -36,11 +36,15 @@ class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
         Log.d("検索した日時", viewModel.lastSearchDate.toString())
 
         val gitRepo = args.gitRepo
+        val language = gitRepo.language
         binding.also {
             it.ownerIconView.load(gitRepo.ownerIconUrl.avatarUrl)
             it.nameView.text = gitRepo.name
-            it.languageView.text =
-                if (gitRepo.language.isNullOrEmpty()) "No Language." else getString(R.string.written_language, gitRepo.language)
+            it.languageView.text = if (language.isNullOrEmpty()) {
+                getString(R.string.no_language)
+            } else {
+                getString(R.string.written_language, language)
+            }
             it.starsView.text = getString(R.string.stars_view, gitRepo.stargazersCount)
             it.watchersView.text = getString(R.string.watchers_view, gitRepo.watchersCount)
             it.forksView.text = getString(R.string.forks_view, gitRepo.forksCount)

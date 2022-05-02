@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.codeCheck.repository
+package jp.co.yumemi.android.codeCheck.data.repository
 
 import android.content.Context
 import android.os.SystemClock
@@ -15,9 +15,9 @@ import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import jp.co.yumemi.android.codeCheck.GitRepo
-import jp.co.yumemi.android.codeCheck.GitRepoList
 import jp.co.yumemi.android.codeCheck.data.config.HttpRoutes
+import jp.co.yumemi.android.codeCheck.data.model.GitRepo
+import jp.co.yumemi.android.codeCheck.data.model.GitRepoList
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -29,11 +29,13 @@ class SearchRepositoryImpl(
 ) : SearchRepository {
 
     override suspend fun createSearchCallbackFlow(textView: TextView): Flow<List<GitRepo>> = callbackFlow {
+
+        // 起動された時点から現在までの時間
         var lastClickTime: Long = 0
 
         // データ更新を通知するリスナー
         val listener = OnEditorActionListener { editText, action, _ ->
-            // 検索buttonを押す間隔を1秒以上にする
+            // 検索ボタンを押す間隔を1秒以上に調整
             if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
                 return@OnEditorActionListener false
             }
@@ -44,7 +46,7 @@ class SearchRepositoryImpl(
                     // 何も入力されていない場合、入力を促すToastを表示
                     "" -> Toast.makeText(context, "キーワードが入力されていません", Toast.LENGTH_SHORT).show()
 
-                    // Git repositoryを検索
+                    // Git Repositoryを検索
                     else -> launch {
                         val repositories = requestGitRepositories(keyword)
                         trySend(repositories)

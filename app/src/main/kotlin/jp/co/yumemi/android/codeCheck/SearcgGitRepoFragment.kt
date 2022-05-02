@@ -43,7 +43,6 @@ class SearchGitRepoFragment : Fragment(R.layout.fragment_search_git_repo) {
             }
         })
 
-
         viewModel.onSearch(binding.searchInputText)
 
         binding.recyclerView.also {

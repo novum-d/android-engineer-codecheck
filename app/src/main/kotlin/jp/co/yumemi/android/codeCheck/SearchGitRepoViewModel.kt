@@ -3,17 +3,17 @@
  */
 package jp.co.yumemi.android.codeCheck
 
-import android.os.Parcelable
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import java.util.*
 import jp.co.yumemi.android.codeCheck.repository.SearchRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import java.util.Date
 
 class SearchGitRepoViewModel(
     private val searchRepository: SearchRepository
@@ -40,13 +40,31 @@ class SearchGitRepoViewModel(
     }
 }
 
-@Parcelize
+@Serializable
+data class GitRepoList(
+    val items: List<GitRepo>
+) : java.io.Serializable
+
+@Serializable
 data class GitRepo(
+    @SerialName("full_name")
     val name: String,
-    val ownerIconUrl: String,
-    val language: String,
+    @SerialName("owner")
+    val ownerIconUrl: Owner,
+    @SerialName("language")
+    val language: String?,
+    @SerialName("stargazers_count")
     val stargazersCount: Long,
+    @SerialName("watchers_count")
     val watchersCount: Long,
+    @SerialName("forks_count")
     val forksCount: Long,
-    val openIssuesCount: Long,
-) : Parcelable
+    @SerialName("open_issues_count")
+    val openIssuesCount: Long
+) : java.io.Serializable
+
+@Serializable
+data class Owner(
+    @SerialName("avatar_url")
+    val avatarUrl: String
+) : java.io.Serializable

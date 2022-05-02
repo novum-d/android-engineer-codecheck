@@ -13,15 +13,15 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import jp.co.yumemi.android.codeCheck.GitRepo
-import jp.co.yumemi.android.codeCheck.R
+import jp.co.yumemi.android.codeCheck.GitRepoList
 import jp.co.yumemi.android.codeCheck.data.config.HttpRoutes
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
 
 class SearchRepositoryImpl(
     private val client: HttpClient,
@@ -63,12 +63,14 @@ class SearchRepositoryImpl(
     }
 
     private suspend fun requestGitRepositories(keyword: String): List<GitRepo> {
+
         // GithubApiにaccessし、HttpResponseを受け取る
         val response: HttpResponse = try {
             client.get(HttpRoutes.GIT_HUB_API) {
                 timeout {
                     requestTimeoutMillis = 6000 // タイムアウトするまでミリ秒
                 }
+                contentType(ContentType.Application.Json)
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", keyword)
             }
@@ -77,32 +79,7 @@ class SearchRepositoryImpl(
             null
         } ?: return emptyList()
 
-        // HttpResponseをJSON配列に変換
-        val jsonBody = JSONObject(response.body<String>())
-        val jsonItems = jsonBody.optJSONArray("items") ?: JSONArray()
-        val items = mutableListOf<GitRepo>()
-
-        // Git repositoryのlistを作成
-        for (i in 0 until jsonItems.length()) {
-            val jsonItem = jsonItems.optJSONObject(i)
-            val name = jsonItem.optString("full_name")
-            val ownerIconUrl = jsonItem.optJSONObject("owner")?.optString("avatar_url") ?: ""
-            val language = jsonItem.optString("language")
-            val stargazersCount = jsonItem.optLong("stargazers_count")
-            val watchersCount = jsonItem.optLong("watchers_count")
-            val forksCount = jsonItem.optLong("forks_count")
-            val openIssuesCount = jsonItem.optLong("open_issues_count")
-            val gitRepo = GitRepo(
-                name = name,
-                ownerIconUrl = ownerIconUrl,
-                language = context.getString(R.string.written_language, language),
-                stargazersCount = stargazersCount,
-                watchersCount = watchersCount,
-                forksCount = forksCount,
-                openIssuesCount = openIssuesCount
-            )
-            items.add(gitRepo)
-        }
-        return items
+        return response.body<GitRepoList>().items
+        //     language = context.getString(R.string.written_language, language),
     }
 }

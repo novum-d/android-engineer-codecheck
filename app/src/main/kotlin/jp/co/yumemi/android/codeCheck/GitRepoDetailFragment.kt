@@ -35,7 +35,7 @@ class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
 
         val repository = args.gitRepo
         binding.also {
-            it.ownerIconView.load(repository.ownerIconUrl)
+            it.ownerIconView.load(repository.ownerIconUrl.avatarUrl)
             it.nameView.text = repository.name
             it.languageView.text = repository.language
             it.starsView.text = "${repository.stargazersCount} stars"

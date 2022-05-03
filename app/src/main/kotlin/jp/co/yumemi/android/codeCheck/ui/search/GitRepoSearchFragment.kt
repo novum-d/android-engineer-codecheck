@@ -23,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 class GitRepoSearchFragment : Fragment(R.layout.fragment_search_git_repo) {
+
     private val viewModel: GitRepoSearchViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -33,10 +34,10 @@ class GitRepoSearchFragment : Fragment(R.layout.fragment_search_git_repo) {
                 findNavController().navigate(action)
             }
             setContent {
-                val repositories by viewModel.repositories.observeAsState()
+                val repositories = viewModel.repositories.observeAsState().value ?: listOf()
                 CodeCheckTheme {
                     SearchScreen(
-                        repositories = repositories ?: listOf(),
+                        repositories = repositories,
                         navigateToDetail = navigateToDetailScreen
                     )
                 }

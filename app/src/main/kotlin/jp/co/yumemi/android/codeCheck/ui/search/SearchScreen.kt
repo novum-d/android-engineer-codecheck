@@ -1,26 +1,19 @@
 package jp.co.yumemi.android.codeCheck.ui.search
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import jp.co.yumemi.android.codeCheck.data.model.GitRepo
+import jp.co.yumemi.android.codeCheck.data.model.Owner
+import jp.co.yumemi.android.codeCheck.di.launchKoin
+import jp.co.yumemi.android.codeCheck.ui.components.SearchBody
 import jp.co.yumemi.android.codeCheck.ui.components.SearchHeader
+import jp.co.yumemi.android.codeCheck.ui.theme.CodeCheckTheme
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -31,53 +24,52 @@ fun SearchScreen(
 ) {
     Column(Modifier.fillMaxSize()) {
         SearchHeader()
-        LazyColumn(
-            Modifier
-                .weight(1f)
-                .fillMaxSize()
-        ) {
-            items(repositories) {
-                GitRepoRow(
-                    name = it.name,
-                    onClick = { navigateToDetail(it) }
-                )
-            }
-        }
+        SearchBody(
+            repositories = repositories,
+            navigateToDetail = navigateToDetail,
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 
+@ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+@Preview
 @Composable
-fun GitRepoRow(
-    name: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .clickable(onClick = onClick)
-            .fillMaxWidth(1f)
-            .padding(
-                vertical = 4.dp,
-                horizontal = 8.dp
-            ),
-        elevation = 4.dp
-    ) {
-        GitRepoRowContent(modifier = modifier, name)
+fun SearchScreenPreview() {
+    // プレビューするコンポーネントツリーにkoinでdiを行っている場合は、koinを起動する必要がある
+    launchKoin(LocalContext.current)
+    CodeCheckTheme {
+        SearchScreen(repositories = repositories, navigateToDetail = {})
     }
 }
 
-@Composable
-fun GitRepoRowContent(modifier: Modifier, name: String) {
-    Column(
-        modifier = modifier.padding(12.dp)
-    ) {
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Text(
-                text = name,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
+val repositories = listOf(
+    GitRepo(
+        name = "dcyuki/yumemi_bot",
+        ownerIconUrl = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/37479458?v=4"),
+        language = "JavaScript",
+        stargazersCount = 25,
+        watchersCount = 25,
+        forksCount = 4,
+        openIssuesCount = 0
+    ),
+    GitRepo(
+        name = "yumemi-inc/ios-engineer-codecheck",
+        ownerIconUrl = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/6687975?v=4"),
+        language = "Swift",
+        stargazersCount = 75,
+        watchersCount = 75,
+        forksCount = 5,
+        openIssuesCount = 9
+    ),
+    GitRepo(
+        name = "Kaito-Dogi/android-intern-assignment-yumemi",
+        ownerIconUrl = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/49048577?v=4"),
+        language = "Kotlin",
+        stargazersCount = 0,
+        watchersCount = 0,
+        forksCount = 4,
+        openIssuesCount = 1
+    )
+)

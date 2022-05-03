@@ -23,16 +23,17 @@ fun DetailsScreen(gitRepo: GitRepo) {
 @Preview
 @Composable
 fun DetailsScreenPreview() {
-    val gitRepo = GitRepo(
-        name = "yumemi-inc/android-engineer-codecheck",
-        ownerIconUrl = Owner("https://avatars.githubusercontent.com/u/6687975?v=4"),
-        language = "Kotlin",
-        stargazersCount = 71,
-        watchersCount = 71,
-        forksCount = 3,
-        openIssuesCount = 9
-    )
     CodeCheckTheme {
         DetailsScreen(gitRepo = gitRepo)
     }
 }
+
+val gitRepo = GitRepo(
+    name = "yumemi-inc/android-engineer-codecheck",
+    ownerIconUrl = Owner("https://avatars.githubusercontent.com/u/6687975?v=4"),
+    language = "Kotlin",
+    stargazersCount = 71,
+    watchersCount = 71,
+    forksCount = 3,
+    openIssuesCount = 9
+)

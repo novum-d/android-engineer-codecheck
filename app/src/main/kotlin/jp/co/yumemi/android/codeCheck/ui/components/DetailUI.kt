@@ -139,7 +139,6 @@ fun GitRepoStatusView(gitRepo: GitRepo) {
 
 val gitStatusSize = 12.sp
 
-
 /**
  * Favicon
  *

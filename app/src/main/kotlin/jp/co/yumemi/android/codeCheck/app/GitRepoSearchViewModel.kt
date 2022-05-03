@@ -3,17 +3,16 @@
  */
 package jp.co.yumemi.android.codeCheck.app
 
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import java.util.*
 import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 import jp.co.yumemi.android.codeCheck.data.repository.SearchRepository
 import kotlinx.coroutines.launch
+import java.util.*
 
-class SearchGitRepoViewModel(
+class GitRepoSearchViewModel(
     private val searchRepository: SearchRepository
 ) : ViewModel() {
 
@@ -25,15 +24,22 @@ class SearchGitRepoViewModel(
     private val _repositories = MutableLiveData<List<GitRepo>>()
     val repositories: LiveData<List<GitRepo>> get() = _repositories
 
-    fun onSearch(textView: TextView) {
+    private val _expanded = MutableLiveData<Boolean>()
+    val expanded: LiveData<Boolean> get() = _expanded
+
+    init {
+        _expanded.value = true
+    }
+
+    fun onSearch(name: String) {
         viewModelScope.launch {
-            searchRepository.createSearchCallbackFlow(textView)
-                // .debounce(10_00)
-                .collect {
-                    _repositories.value = it
-                }
-            _lastSearchDate.value = Date()
+            _repositories.value = searchRepository.requestGitRepositories(name)
+        }
+    }
+
+    fun switchExpand() {
+        _expanded.value?.let {
+            _expanded.value = !it
         }
     }
 }
-

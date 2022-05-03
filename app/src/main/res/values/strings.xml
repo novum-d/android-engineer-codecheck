@@ -16,4 +16,5 @@
     <string name="no_language">No Language.</string>
     <string name="service_is_not_available">現在サービスがご利用いただけません</string>
     <string name="empty_keyword">キーワードが入力されていません</string>
+    <string name="please_enter_reository_name">リポジトリ名を入力</string>
 </resources>

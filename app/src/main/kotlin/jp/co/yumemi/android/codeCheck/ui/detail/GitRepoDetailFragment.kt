@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
 import jp.co.yumemi.android.codeCheck.R
-import jp.co.yumemi.android.codeCheck.app.SearchGitRepoViewModel
+import jp.co.yumemi.android.codeCheck.app.GitRepoSearchViewModel
 import jp.co.yumemi.android.codeCheck.databinding.FragmentGitRepoDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,7 +23,7 @@ class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
     private var _binding: FragmentGitRepoDetailBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: SearchGitRepoViewModel by viewModel()
+    private val viewModel: GitRepoSearchViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGitRepoDetailBinding.inflate(inflater, container, false)

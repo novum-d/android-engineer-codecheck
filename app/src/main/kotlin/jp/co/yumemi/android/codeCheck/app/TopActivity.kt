@@ -8,6 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.di.launchKoin
 
+/**
+ * トップアクティビティ
+ *
+ */
 class TopActivity : AppCompatActivity(R.layout.activity_top) {
 
     override fun onCreate(savedInstanceState: Bundle?) {

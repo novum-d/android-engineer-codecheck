@@ -1,5 +1,7 @@
 package jp.co.yumemi.android.codeCheck.ui.components
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,24 +26,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 
+/**
+ * 詳細カード
+ *
+ * @param gitRepo Gitリポジトリオブジェクト
+ */
 @Composable
 fun DetailCard(gitRepo: GitRepo) {
+    val context = LocalContext.current
+    val onLinkClick = {
+        val uri = Uri.parse(gitRepo.htmlUrl)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        ContextCompat.startActivity(context, intent, null)
+    }
     Card(
-        modifier = Modifier.clickable(onClick = {}),
+        modifier = Modifier.clickable(onClick = onLinkClick),
         elevation = 8.dp
     ) {
         DetailCardContent(gitRepo)
     }
 }
 
+/**
+ * 詳細カードコンテンツ
+ *
+ * @param gitRepo Gitリポジトリオブジェクト
+ */
 @Composable
 fun DetailCardContent(gitRepo: GitRepo) {
     Column {
@@ -49,7 +69,7 @@ fun DetailCardContent(gitRepo: GitRepo) {
             color = MaterialTheme.colors.secondaryVariant,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Favicon(url = gitRepo.ownerIconUrl.avatarUrl, Modifier.padding(20.dp))
+            Favicon(url = gitRepo.owner.avatarUrl, Modifier.padding(20.dp))
         }
         Column(
             Modifier.padding(16.dp)
@@ -64,6 +84,11 @@ fun DetailCardContent(gitRepo: GitRepo) {
     }
 }
 
+/**
+ * Gitレポジトリのステータスビュー
+ *
+ * @param gitRepo Gitのポジトリオブジェクト
+ */
 @Composable
 fun GitRepoStatusView(gitRepo: GitRepo) {
 
@@ -114,6 +139,13 @@ fun GitRepoStatusView(gitRepo: GitRepo) {
 
 val gitStatusSize = 12.sp
 
+
+/**
+ * Favicon
+ *
+ * @param url アバターURL
+ * @param modifier
+ */
 @Composable
 fun Favicon(
     url: String,

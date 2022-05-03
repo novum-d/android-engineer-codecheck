@@ -16,6 +16,7 @@ val codeCheckAppModule = module {
     single { SearchRepositoryImpl(client, androidContext()) }
 }
 
+// koinを起動
 fun launchKoin(context: Context) {
     GlobalContext.getOrNull() ?: GlobalContext.startKoin {
         androidContext(context)
@@ -23,6 +24,7 @@ fun launchKoin(context: Context) {
     }
 }
 
+// クライアントAPI
 private val client = HttpClient(Android) {
     install(HttpTimeout)
     install(ContentNegotiation) {

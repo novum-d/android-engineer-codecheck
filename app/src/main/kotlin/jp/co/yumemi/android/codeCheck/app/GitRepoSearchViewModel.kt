@@ -12,6 +12,11 @@ import jp.co.yumemi.android.codeCheck.data.repository.SearchRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * リポジトリ検索ビューモデル
+ *
+ * @property searchRepository
+ */
 class GitRepoSearchViewModel(
     private val searchRepository: SearchRepository
 ) : ViewModel() {
@@ -24,6 +29,7 @@ class GitRepoSearchViewModel(
     private val _repositories = MutableLiveData<List<GitRepo>>()
     val repositories: LiveData<List<GitRepo>> get() = _repositories
 
+    /** 検索フィールドのアニメーションの状態 */
     private val _expanded = MutableLiveData<Boolean>()
     val expanded: LiveData<Boolean> get() = _expanded
 
@@ -31,12 +37,21 @@ class GitRepoSearchViewModel(
         _expanded.value = true
     }
 
+    /**
+     * 検索
+     *
+     * @param name リポジトリ名
+     */
     fun onSearch(name: String) {
         viewModelScope.launch {
             _repositories.value = searchRepository.requestGitRepositories(name)
         }
     }
 
+    /**
+     * 検索フィールドのアニメーションの状態を切り替える
+     *
+     */
     fun switchExpand() {
         _expanded.value?.let {
             _expanded.value = !it

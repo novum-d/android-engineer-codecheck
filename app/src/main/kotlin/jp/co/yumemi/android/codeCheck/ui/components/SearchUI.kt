@@ -3,7 +3,6 @@ package jp.co.yumemi.android.codeCheck.ui.components
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,10 +12,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -43,8 +44,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
 import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.app.GitRepoSearchViewModel
 import org.koin.androidx.compose.getViewModel
@@ -72,14 +71,17 @@ fun SearchHeader(
             }
             .padding(
                 vertical = 8.dp,
-                horizontal = 12.dp,
+                horizontal = 8.dp,
             )
             .height(40.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        AppIcon(expanded)
-        Spacer(Modifier.padding(2.dp))
+        AppIcon(
+            expanded = expanded,
+            tint = MaterialTheme.colors.onPrimary
+        )
+        Spacer(Modifier.padding(4.dp))
         SearchTab(
             modifier = Modifier.weight(1f),
             onClick = viewModel::switchExpand,
@@ -95,11 +97,17 @@ fun SearchHeader(
 
 @ExperimentalAnimationApi
 @Composable
-private fun AppIcon(extended: Boolean) {
-    AnimatedVisibility(visible = extended) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null
+private fun AppIcon(
+    expanded: Boolean,
+    tint: Color,
+    modifier: Modifier = Modifier
+) {
+    AnimatedVisibility(visible = expanded) {
+        Icon(
+            painter = painterResource(R.drawable.ic_github),
+            contentDescription = null,
+            tint = tint,
+            modifier = modifier
         )
     }
 }
@@ -154,7 +162,7 @@ fun HoistedSearchTextField(
         inputText = inputText,
         onValueChange = onValueChange,
         onSearch = onSearch,
-        close = viewModel::switchExpand
+        dismiss = viewModel::switchExpand
     )
 }
 
@@ -164,17 +172,18 @@ fun SearchTextField(
     inputText: String,
     onValueChange: (String) -> Unit,
     onSearch: () -> Unit,
-    close: () -> Unit,
+    dismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     Row {
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+        Icon(
+            painter = painterResource(id = R.drawable.ic_github),
             contentDescription = null,
+            tint = MaterialTheme.colors.onSurface,
             modifier = modifier
                 .background(
-                    shape = RoundedCornerShape(50.dp),
+                    shape = CircleShape,
                     color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
                 )
                 .padding(4.dp)
@@ -194,7 +203,7 @@ fun SearchTextField(
                     onSearch = {
                         onSearch()
                         keyboardController?.hide()
-                        close()
+                        dismiss()
                     }
                 ),
                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.onSurface),
@@ -218,22 +227,3 @@ fun SearchTextField(
     }
 }
 
-@Composable
-fun Favicon(
-    url: String,
-    modifier: Modifier = Modifier
-) {
-    Image(
-        painter = rememberImagePainter(
-            data = url,
-            builder = {
-                error(R.drawable.ic_launcher_foreground)
-                crossfade(true)
-                placeholder(R.drawable.ic_launcher_foreground)
-                transformations(CircleCropTransformation())
-            }
-        ),
-        contentDescription = null,
-        modifier = modifier
-    )
-}

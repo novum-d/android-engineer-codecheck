@@ -23,7 +23,9 @@ data class GitRepo(
     @SerialName("forks_count")
     val forksCount: Long,
     @SerialName("open_issues_count")
-    val openIssuesCount: Long
+    val openIssuesCount: Long,
+    @SerialName("html_url")
+    val htmlUrl: String
 ) : java.io.Serializable
 
 @Serializable

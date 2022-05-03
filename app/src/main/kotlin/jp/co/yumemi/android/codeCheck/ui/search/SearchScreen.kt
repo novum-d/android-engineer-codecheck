@@ -52,7 +52,8 @@ val repositories = listOf(
         stargazersCount = 25,
         watchersCount = 25,
         forksCount = 4,
-        openIssuesCount = 0
+        openIssuesCount = 0,
+        htmlUrl = ""
     ),
     GitRepo(
         name = "yumemi-inc/ios-engineer-codecheck",
@@ -61,7 +62,8 @@ val repositories = listOf(
         stargazersCount = 75,
         watchersCount = 75,
         forksCount = 5,
-        openIssuesCount = 9
+        openIssuesCount = 9,
+        htmlUrl = ""
     ),
     GitRepo(
         name = "Kaito-Dogi/android-intern-assignment-yumemi",
@@ -70,6 +72,7 @@ val repositories = listOf(
         stargazersCount = 0,
         watchersCount = 0,
         forksCount = 4,
-        openIssuesCount = 1
+        openIssuesCount = 1,
+        htmlUrl = ""
     )
 )

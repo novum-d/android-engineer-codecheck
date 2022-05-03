@@ -35,5 +35,6 @@ val gitRepo = GitRepo(
     stargazersCount = 71,
     watchersCount = 71,
     forksCount = 3,
-    openIssuesCount = 9
+    openIssuesCount = 9,
+    htmlUrl = ""
 )

@@ -1,5 +1,9 @@
 package jp.co.yumemi.android.codeCheck.ui.components
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +28,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import jp.co.yumemi.android.codeCheck.R
@@ -34,8 +40,14 @@ import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 
 @Composable
 fun DetailCard(gitRepo: GitRepo) {
+    val context = LocalContext.current
+    val onLinkClick = {
+        val uri = Uri.parse(gitRepo.htmlUrl)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        ContextCompat.startActivity(context, intent, null)
+    }
     Card(
-        modifier = Modifier.clickable(onClick = {}),
+        modifier = Modifier.clickable(onClick = onLinkClick),
         elevation = 8.dp
     ) {
         DetailCardContent(gitRepo)

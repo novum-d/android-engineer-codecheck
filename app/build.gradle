@@ -73,7 +73,7 @@ dependencies {
     // Added ---------------------------------------------------------------
     ktlint 'com.pinterest:ktlint:0.45.2'
 
-    implementation "io.insert-koin:koin-android:3.1.5"
+    implementation "io.insert-koin:koin-androidx-compose:3.1.5"
 
     implementation "io.ktor:ktor-client-android:$ktor_version"
     implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"

@@ -14,7 +14,7 @@ val MPLUS1 = FontFamily(
     Font(R.font.mplus1_semibold, FontWeight.W600)
 )
 
-val PoncTypography = Typography(
+val CodeCheckTypography = Typography(
     h1 = TextStyle(
         fontFamily = MPLUS1,
         fontWeight = FontWeight.W400,

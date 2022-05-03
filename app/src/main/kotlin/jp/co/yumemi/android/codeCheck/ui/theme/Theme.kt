@@ -5,6 +5,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val LightThemeColors = lightColors(
 
@@ -48,9 +50,16 @@ fun CodeCheckTheme(
         DarkThemeColors
     }
 
+    // theme colors
     MaterialTheme(
         colors = colors,
-        typography = PoncTypography,
+        typography = CodeCheckTypography,
         content = content
     )
+
+    // system ui color
+    val systemUiController = rememberSystemUiController()
+    SideEffect {
+        systemUiController.setSystemBarsColor(colors.primary)
+    }
 }

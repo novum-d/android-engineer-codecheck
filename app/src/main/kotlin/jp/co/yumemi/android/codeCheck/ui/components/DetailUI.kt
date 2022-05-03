@@ -25,17 +25,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.data.model.GitRepo
-import jp.co.yumemi.android.codeCheck.data.model.Owner
-import jp.co.yumemi.android.codeCheck.ui.theme.CodeCheckTheme
-
-
 
 @Composable
 fun DetailCard(gitRepo: GitRepo) {
@@ -46,7 +41,6 @@ fun DetailCard(gitRepo: GitRepo) {
         DetailCardContent(gitRepo)
     }
 }
-
 
 @Composable
 fun DetailCardContent(gitRepo: GitRepo) {
@@ -119,8 +113,6 @@ fun GitRepoStatusView(gitRepo: GitRepo) {
 }
 
 val gitStatusSize = 12.sp
-
-
 
 @Composable
 fun Favicon(

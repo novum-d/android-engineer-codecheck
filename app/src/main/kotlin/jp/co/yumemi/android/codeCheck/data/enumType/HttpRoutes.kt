@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.codeCheck.data.config
+package jp.co.yumemi.android.codeCheck.data.enumType
 
 object HttpRoutes {
     private const val BASE_URL = "https://api.github.com"

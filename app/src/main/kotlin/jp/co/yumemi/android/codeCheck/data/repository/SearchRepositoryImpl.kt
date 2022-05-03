@@ -16,11 +16,23 @@ import jp.co.yumemi.android.codeCheck.data.enumType.HttpRoutes
 import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 import jp.co.yumemi.android.codeCheck.data.model.GitRepoList
 
+/**
+ * 検索リポジトリの実装
+ *
+ * @property client
+ * @property context
+ */
 class SearchRepositoryImpl(
     private val client: HttpClient,
     private val context: Context
 ) : SearchRepository {
 
+    /**
+     * Gitのリポジトリリストをリクエスト
+     *
+     * @param name リポジトリ名
+     * @return Gitリポジトリリスト
+     */
     override suspend fun requestGitRepositories(name: String): List<GitRepo> {
 
         // GithubApiにアクセスし、レスポンスを受け取る

@@ -1,9 +1,7 @@
 package jp.co.yumemi.android.codeCheck.ui.components
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +36,11 @@ import coil.transform.CircleCropTransformation
 import jp.co.yumemi.android.codeCheck.R
 import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 
+/**
+ * 詳細カード
+ *
+ * @param gitRepo Gitリポジトリオブジェクト
+ */
 @Composable
 fun DetailCard(gitRepo: GitRepo) {
     val context = LocalContext.current
@@ -54,6 +57,11 @@ fun DetailCard(gitRepo: GitRepo) {
     }
 }
 
+/**
+ * 詳細カードコンテンツ
+ *
+ * @param gitRepo Gitリポジトリオブジェクト
+ */
 @Composable
 fun DetailCardContent(gitRepo: GitRepo) {
     Column {
@@ -61,7 +69,7 @@ fun DetailCardContent(gitRepo: GitRepo) {
             color = MaterialTheme.colors.secondaryVariant,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Favicon(url = gitRepo.ownerIconUrl.avatarUrl, Modifier.padding(20.dp))
+            Favicon(url = gitRepo.owner.avatarUrl, Modifier.padding(20.dp))
         }
         Column(
             Modifier.padding(16.dp)
@@ -76,6 +84,11 @@ fun DetailCardContent(gitRepo: GitRepo) {
     }
 }
 
+/**
+ * Gitレポジトリのステータスビュー
+ *
+ * @param gitRepo Gitのポジトリオブジェクト
+ */
 @Composable
 fun GitRepoStatusView(gitRepo: GitRepo) {
 
@@ -126,6 +139,13 @@ fun GitRepoStatusView(gitRepo: GitRepo) {
 
 val gitStatusSize = 12.sp
 
+
+/**
+ * Favicon
+ *
+ * @param url アバターURL
+ * @param modifier
+ */
 @Composable
 fun Favicon(
     url: String,

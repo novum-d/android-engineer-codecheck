@@ -11,6 +11,11 @@ import jp.co.yumemi.android.codeCheck.data.model.Owner
 import jp.co.yumemi.android.codeCheck.ui.components.DetailCard
 import jp.co.yumemi.android.codeCheck.ui.theme.CodeCheckTheme
 
+/**
+ * リポジトリ詳細画面
+ *
+ * @param gitRepo Gitリポジトリオブジェクト
+ */
 @Composable
 fun DetailsScreen(gitRepo: GitRepo) {
     Column(
@@ -30,7 +35,7 @@ fun DetailsScreenPreview() {
 
 val gitRepo = GitRepo(
     name = "yumemi-inc/android-engineer-codecheck",
-    ownerIconUrl = Owner("https://avatars.githubusercontent.com/u/6687975?v=4"),
+    owner = Owner("https://avatars.githubusercontent.com/u/6687975?v=4"),
     language = "Kotlin",
     stargazersCount = 71,
     watchersCount = 71,

@@ -20,6 +20,10 @@ import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 import jp.co.yumemi.android.codeCheck.ui.theme.CodeCheckTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * Gitリポジトリの検索フラグメント
+ *
+ */
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 class GitRepoSearchFragment : Fragment(R.layout.fragment_search_git_repo) {
@@ -29,6 +33,8 @@ class GitRepoSearchFragment : Fragment(R.layout.fragment_search_git_repo) {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         return ComposeView(requireContext()).apply {
+
+            // 詳細画面へナビゲート
             val navigateToDetailScreen = { gitRepo: GitRepo ->
                 val action = GitRepoSearchFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(gitRepo)
                 findNavController().navigate(action)

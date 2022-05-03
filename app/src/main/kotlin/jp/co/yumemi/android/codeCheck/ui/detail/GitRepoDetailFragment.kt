@@ -16,6 +16,10 @@ import jp.co.yumemi.android.codeCheck.app.GitRepoSearchViewModel
 import jp.co.yumemi.android.codeCheck.ui.theme.CodeCheckTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * Gitリポジトリの詳細フラグメント
+ *
+ */
 class GitRepoDetailFragment : Fragment(R.layout.fragment_git_repo_detail) {
 
     private val args: GitRepoDetailFragmentArgs by navArgs()

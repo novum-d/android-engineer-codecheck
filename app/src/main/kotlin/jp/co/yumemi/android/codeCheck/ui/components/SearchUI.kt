@@ -1,6 +1,5 @@
 package jp.co.yumemi.android.codeCheck.ui.components
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
@@ -60,13 +59,19 @@ import jp.co.yumemi.android.codeCheck.data.model.GitRepo
 import org.koin.androidx.compose.getViewModel
 
 /** Header ---------------------------------------------------------------------------- */
+
+/**
+ * 検索画面のHeader
+ *
+ * @param viewModel
+ */
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun SearchHeader(
     viewModel: GitRepoSearchViewModel = getViewModel()
 ) {
-    var expanded = viewModel.expanded.observeAsState().value ?: true
+    val expanded = viewModel.expanded.observeAsState().value ?: true
     val color = MaterialTheme.colors.secondary
     Row(
         modifier = Modifier
@@ -90,7 +95,7 @@ fun SearchHeader(
     ) {
         AppIcon(
             expanded = expanded,
-            tint = MaterialTheme.colors.surface,
+            color = MaterialTheme.colors.surface,
             modifier = Modifier
                 .clip(CircleShape)
                 .background(MaterialTheme.colors.onSurface)
@@ -98,39 +103,48 @@ fun SearchHeader(
         Spacer(Modifier.padding(4.dp))
         SearchTab(
             modifier = Modifier.weight(1f),
-            onClick = viewModel::switchExpand,
+            onTabClick = viewModel::switchExpand,
             expanded = expanded,
         )
     }
-
-    BackHandler(
-        enabled = !expanded,
-        onBack = { expanded = false }
-    )
 }
 
+/**
+ * アプリアイコン
+ *
+ * @param expanded アニメーションの状態
+ * @param color アイコンの色
+ * @param modifier
+ */
 @ExperimentalAnimationApi
 @Composable
 private fun AppIcon(
     expanded: Boolean,
-    tint: Color,
+    color: Color,
     modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(visible = expanded) {
         Icon(
             painter = painterResource(R.drawable.ic_github),
             contentDescription = null,
-            tint = tint,
+            tint = color,
             modifier = modifier
         )
     }
 }
 
+/**
+ * 検索タブ
+ *
+ * @param onTabClick タブクリック時
+ * @param expanded アニメーションの状態
+ * @param modifier
+ */
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun SearchTab(
-    onClick: () -> Unit,
+    onTabClick: () -> Unit,
     expanded: Boolean,
     modifier: Modifier
 ) {
@@ -141,7 +155,7 @@ fun SearchTab(
             .clickable(
                 interactionSource = interactionSource,
                 indication = null
-            ) { onClick() }
+            ) { onTabClick() }
     ) {
         Row(
             modifier = modifier.padding(
@@ -159,10 +173,15 @@ fun SearchTab(
     }
 }
 
+/**
+ * 巻き上げ検索フィールド
+ *
+ * @param viewModel
+ */
 @ExperimentalComposeUiApi
 @Composable
 fun HoistedSearchTextField(
-    viewModel: GitRepoSearchViewModel = getViewModel()
+    viewModel: GitRepoSearchViewModel = getViewModel(),
 ) {
     var inputText by rememberSaveable { mutableStateOf("") }
     val onValueChange = { text: String -> inputText = text }
@@ -173,18 +192,27 @@ fun HoistedSearchTextField(
     }
 
     SearchTextField(
-        inputText = inputText,
-        onValueChange = onValueChange,
+        name = inputText,
+        onKeywordChange = onValueChange,
         onSearch = onSearch,
         dismiss = viewModel::switchExpand
     )
 }
 
+/**
+ * 検索フィールド
+ *
+ * @param name リポジトリ名
+ * @param onKeywordChange 検索キーワード変更時
+ * @param onSearch 検索
+ * @param dismiss 入力をキャンセル
+ * @param modifier
+ */
 @ExperimentalComposeUiApi
 @Composable
 fun SearchTextField(
-    inputText: String,
-    onValueChange: (String) -> Unit,
+    name: String,
+    onKeywordChange: (String) -> Unit,
     onSearch: () -> Unit,
     dismiss: () -> Unit,
     modifier: Modifier = Modifier
@@ -207,8 +235,8 @@ fun SearchTextField(
             val keyboardController = LocalSoftwareKeyboardController.current
             val focusRequester = remember { FocusRequester() }
             BasicTextField(
-                value = inputText,
-                onValueChange = onValueChange,
+                value = name,
+                onValueChange = onKeywordChange,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search,
                     keyboardType = KeyboardType.Uri
@@ -223,10 +251,10 @@ fun SearchTextField(
                 textStyle = MaterialTheme.typography.body1.copy(color = MaterialTheme.colors.onSurface),
                 singleLine = true,
                 cursorBrush = SolidColor(MaterialTheme.colors.onSurface),
-                modifier = modifier.focusRequester(focusRequester)
+                modifier = modifier.fillMaxWidth().focusRequester(focusRequester)
             )
 
-            if (inputText.isEmpty()) {
+            if (name.isEmpty()) {
                 Text(
                     text = stringResource(R.string.please_enter_reository_name),
                     color = Color.Gray,
@@ -241,6 +269,14 @@ fun SearchTextField(
 }
 
 /** Body ---------------------------------------------------------------------------- */
+
+/**
+ * 検索画面のBody
+ *
+ * @param repositories Gitリポジトリリスト
+ * @param navigateToDetail 詳細画面へ遷移
+ * @param modifier
+ */
 @Composable
 fun SearchBody(
     repositories: List<GitRepo>,
@@ -251,21 +287,26 @@ fun SearchBody(
         items(repositories) {
             SearchCard(
                 name = it.name,
-                onClick = { navigateToDetail(it) }
+                onCardClick = { navigateToDetail(it) }
             )
         }
     }
 }
 
+/**
+ * Gitリポジトリのカード
+ *
+ * @param name リポジトリ名
+ * @param onCardClick カードクリック時
+ */
 @Composable
 fun SearchCard(
     name: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onCardClick: () -> Unit
 ) {
     Card(
-        modifier = modifier
-            .clickable(onClick = onClick)
+        modifier = Modifier
+            .clickable(onClick = onCardClick)
             .fillMaxWidth(1f)
             .padding(
                 vertical = 4.dp,
@@ -273,14 +314,19 @@ fun SearchCard(
             ),
         elevation = 4.dp
     ) {
-        SearchCardContent(modifier = modifier, name)
+        SearchCardContent(name)
     }
 }
 
+/**
+ * Gitリポジトリのカードコンテンツ
+ *
+ * @param name リポジトリ名
+ */
 @Composable
-fun SearchCardContent(modifier: Modifier, name: String) {
+fun SearchCardContent(name: String) {
     Column(
-        modifier = modifier.padding(12.dp)
+        modifier = Modifier.padding(12.dp)
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(

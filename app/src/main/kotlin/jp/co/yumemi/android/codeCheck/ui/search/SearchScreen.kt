@@ -15,6 +15,12 @@ import jp.co.yumemi.android.codeCheck.ui.components.SearchBody
 import jp.co.yumemi.android.codeCheck.ui.components.SearchHeader
 import jp.co.yumemi.android.codeCheck.ui.theme.CodeCheckTheme
 
+/**
+ * リポジトリ検索画面
+ *
+ * @param repositories Gitリポジトリリスト
+ * @param navigateToDetail 詳細画面へ遷移
+ */
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
@@ -47,7 +53,7 @@ fun SearchScreenPreview() {
 val repositories = listOf(
     GitRepo(
         name = "dcyuki/yumemi_bot",
-        ownerIconUrl = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/37479458?v=4"),
+        owner = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/37479458?v=4"),
         language = "JavaScript",
         stargazersCount = 25,
         watchersCount = 25,
@@ -57,7 +63,7 @@ val repositories = listOf(
     ),
     GitRepo(
         name = "yumemi-inc/ios-engineer-codecheck",
-        ownerIconUrl = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/6687975?v=4"),
+        owner = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/6687975?v=4"),
         language = "Swift",
         stargazersCount = 75,
         watchersCount = 75,
@@ -67,7 +73,7 @@ val repositories = listOf(
     ),
     GitRepo(
         name = "Kaito-Dogi/android-intern-assignment-yumemi",
-        ownerIconUrl = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/49048577?v=4"),
+        owner = Owner(avatarUrl = "https://avatars.githubusercontent.com/u/49048577?v=4"),
         language = "Kotlin",
         stargazersCount = 0,
         watchersCount = 0,
